@@ -35,6 +35,29 @@ def drawAllPieces():
         for j in range (cols):
             if boardArray[i][j] != None:
                 screen.blit(boardArray[i][j].texture, (boardArray[i][j].x, boardArray[i][j].y))
+gotIndex = False  
+selectPiezeIndexX = 0
+selectPiezeIndexY = 0             
+def MoveChip():
+    global gotIndex
+    global selectPiezeIndexX
+    global selectPiezeIndexY
+    if raton.press == True  and not gotIndex:
+        selectPiezeIndexX = raton.xToIndex
+        selectPiezeIndexY = raton.yToIndex
+        if boardArray[selectPiezeIndexY][selectPiezeIndexX] != None:
+            gotIndex = True
+    if raton.press and gotIndex:
+            print (raton.x, raton.y)
+            boardArray[selectPiezeIndexY][selectPiezeIndexX].x = raton.x - 50
+            boardArray[selectPiezeIndexY][selectPiezeIndexX].y = raton.y - 50
+   
+    
+      
+
+    
+        
+
 
 #bucle ######################
 while running:
@@ -53,8 +76,11 @@ while running:
     drawAllPieces()
     raton.MousePosition()
     raton.MousePositionToIndex()
-    if boardArray[raton.yToIndex][raton.xToIndex] != None:
-        print(boardArray[raton.yToIndex][raton.xToIndex].nombre)
+    raton.MousePress()
+    MoveChip()
+    
+
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()
