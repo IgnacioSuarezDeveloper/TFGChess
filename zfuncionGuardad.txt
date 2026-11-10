@@ -1,0 +1,49 @@
+#funcion en desarrollo para mover piezas
+def MoveChip():
+    #variables globales
+    global gotIndex
+    global selectPiezeIndexX
+    global selectPiezeIndexY
+    global turno
+
+    #si se presiona el click y no hay ninguna seleccionada.
+    if raton.press == True  and not gotIndex:
+        #se guarda la fila y la columna donde se hizo click
+        selectPiezeIndexX = raton.xToIndex
+        selectPiezeIndexY = raton.yToIndex
+
+        #si hay una pieza en la fila y columna seleccionada y es del color del turno, se guarda que se ha seleccionado una pieza.
+        if boardArray[selectPiezeIndexY][selectPiezeIndexX] != None and ((turno == Turno.white and boardArray[selectPiezeIndexY][selectPiezeIndexX].color == pieze.Color.blanco) or (turno == Turno.black and boardArray[selectPiezeIndexY][selectPiezeIndexX].color == pieze.Color.negro)) :
+            #se ha seleccionado pieza
+            gotIndex = True
+    if raton.press and gotIndex:
+            #la pieza seleccionada toma la posicion del raton.
+            boardArray[selectPiezeIndexY][selectPiezeIndexX].x = raton.x - pieceWidth / 2
+            boardArray[selectPiezeIndexY][selectPiezeIndexX].y = raton.y - pieceHeight / 2
+    if raton.release and gotIndex:
+            #si la pieza es soltada se guarda la fila y la columna donde se solto la pieza
+            xindex = raton.xToIndex
+            yindex = raton.yToIndex
+
+            #comprueba si en esa fila no hay nada 
+            if boardArray[yindex][xindex] == None:
+                #se guarda la pieza en la nueva casilla vacia 
+                boardArray[yindex][xindex] = boardArray[selectPiezeIndexY][selectPiezeIndexX]
+                #se actualiza la imagen de posicion
+                boardArray[yindex][xindex].x = xindex * pieceWidth
+                boardArray[yindex][xindex].y = yindex * pieceHeight
+                #la casilla donde estaba la pieza se deja vacia
+                boardArray[selectPiezeIndexY][selectPiezeIndexX] = None
+                #se cambia el turno
+                gotIndex = False
+
+                if turno == Turno.white:
+                     turno = Turno.black
+                else:
+                     turno = Turno.white
+            else : #si en la casilla donde se suelta la pieza hay otra pieza, se devuelve la pieza a su posicion original
+                boardArray[selectPiezeIndexY][selectPiezeIndexX].x = selectPiezeIndexX * pieceWidth
+                boardArray[selectPiezeIndexY][selectPiezeIndexX].y = selectPiezeIndexY *  pieceHeight
+                gotIndex = False
+         
+   
