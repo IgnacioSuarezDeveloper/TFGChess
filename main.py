@@ -77,17 +77,19 @@ def MoveChip():
             xindex = raton.xToIndex
             yindex = raton.yToIndex
 
-            
+            #MOVIMIENTO DEL PEON.
             if boardArray[selectPiezeIndexY][selectPiezeIndexX].nombre == pieze.Nombre.peon:
                 direction = 1
+                #direccion del peon segun el color.
                 if boardArray[selectPiezeIndexY][selectPiezeIndexX].color == pieze.Color.blanco:
                     direction = 1
                 else:
                     direction = -1
-                
+
+                #posibles casillas a las que puede mover el peon.
                 posiblesCasillas = [[selectPiezeIndexY + direction, selectPiezeIndexX], [selectPiezeIndexY + direction, selectPiezeIndexX - 1], [selectPiezeIndexY + direction, selectPiezeIndexX + 1]]  # Ejemplo de posiciones posibles para un peón
 
-                #hacia delante 
+                # peon hacia delante 
                 if boardArray[yindex][xindex] == None and posiblesCasillas[0][0] == yindex and posiblesCasillas[0][1] == xindex:
                     nuevaY = posiblesCasillas[0][0]
                     nuevaX = posiblesCasillas[0][1]
@@ -98,7 +100,7 @@ def MoveChip():
                     gotIndex = False
                     cambiarTurno()
                 #peon come en diagonal negro o blanco
-                elif posiblesCasillas[1][0] == yindex and posiblesCasillas[1][1] == xindex and boardArray[yindex][xindex] != None:
+                elif posiblesCasillas[1][0] == yindex and posiblesCasillas[1][1] == xindex and boardArray[yindex][xindex] != None or posiblesCasillas[2][0] == yindex and posiblesCasillas[2][1] == xindex and boardArray[yindex][xindex] != None:
                     boardArray[yindex][xindex] = boardArray[selectPiezeIndexY][selectPiezeIndexX]
                     boardArray[selectPiezeIndexY][selectPiezeIndexX] = None
                     selectPiezeIndexY = yindex

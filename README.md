@@ -22,3 +22,6 @@
 # escribir la funcion de moverChip para peon blanco
     el primero sera el peon que solo se puede mover hacia delante si no hay ninguna ficha delante y puede moverse en diagonal una casilla a la izquierda y en diagonal una casilla a la derecha si hay una ficha del color opuesto 
 # seguir con la funcion de moverChip para peon negro
+-------------------
+# movimiento del peon
+    completado comer en una direccion y hacia delante.
