@@ -34,9 +34,12 @@ turno = Turno.white
 raton = Mouse()
 #######################
 
-
-
-
+def cambiarTurno():
+    global turno
+    if turno == Turno.white:
+        turno = Turno.black
+    else:
+        turno = Turno.white    
 #Dibuja todas las piezas del ajedrez
 def drawAllPieces():
     global boardArray
@@ -46,7 +49,6 @@ def drawAllPieces():
         for j in range (cols):
             if boardArray[i][j] != None:
                 screen.blit(boardArray[i][j].texture, (boardArray[i][j].x, boardArray[i][j].y))
-
 
 #funcion en desarrollo para mover piezas
 def MoveChip():
@@ -74,10 +76,17 @@ def MoveChip():
             #si la pieza es soltada se guarda la fila y la columna donde se solto la pieza
             xindex = raton.xToIndex
             yindex = raton.yToIndex
-           
 
+            
             if boardArray[selectPiezeIndexY][selectPiezeIndexX].nombre == pieze.Nombre.peon:
-                posiblesCasillas = [[selectPiezeIndexY + 1, selectPiezeIndexX], [selectPiezeIndexY + 1, selectPiezeIndexX - 1], [selectPiezeIndexY + 1, selectPiezeIndexX + 1]]  # Ejemplo de posiciones posibles para un peón
+                direction = 1
+                if boardArray[selectPiezeIndexY][selectPiezeIndexX].color == pieze.Color.blanco:
+                    direction = 1
+                else:
+                    direction = -1
+                
+                posiblesCasillas = [[selectPiezeIndexY + direction, selectPiezeIndexX], [selectPiezeIndexY + direction, selectPiezeIndexX - 1], [selectPiezeIndexY + direction, selectPiezeIndexX + 1]]  # Ejemplo de posiciones posibles para un peón
+
                 #hacia delante 
                 if boardArray[yindex][xindex] == None and posiblesCasillas[0][0] == yindex and posiblesCasillas[0][1] == xindex:
                     nuevaY = posiblesCasillas[0][0]
@@ -87,17 +96,21 @@ def MoveChip():
                     boardArray[nuevaY][nuevaX].y = nuevaY * 100
                     boardArray[selectPiezeIndexY][selectPiezeIndexX] = None
                     gotIndex = False
-                    if turno == Turno.white:
-                        turno = Turno.black
-                    else:
-                        turno = Turno.white
+                    cambiarTurno()
+                #peon come en diagonal negro o blanco
+                elif posiblesCasillas[1][0] == yindex and posiblesCasillas[1][1] == xindex and boardArray[yindex][xindex] != None:
+                    boardArray[yindex][xindex] = boardArray[selectPiezeIndexY][selectPiezeIndexX]
+                    boardArray[selectPiezeIndexY][selectPiezeIndexX] = None
+                    selectPiezeIndexY = yindex
+                    selectPiezeIndexX = xindex
+                    boardArray[yindex][xindex].y = yindex * pieceHeight
+                    boardArray[yindex][xindex].x = xindex * pieceWidth
+
+                    cambiarTurno()
                 else : #si en la casilla donde se suelta la pieza hay otra pieza, se devuelve la pieza a su posicion original
                     boardArray[selectPiezeIndexY][selectPiezeIndexX].x = selectPiezeIndexX * pieceWidth
                     boardArray[selectPiezeIndexY][selectPiezeIndexX].y = selectPiezeIndexY *  pieceHeight
                     gotIndex = False   
-
-
-
 #bucle ######################
 while running:
     # poll for events
